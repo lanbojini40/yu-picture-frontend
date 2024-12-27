@@ -1,6 +1,6 @@
 <template>
   <div id="PictureManagePage">
-    <a-flex justify="space-between">\
+    <a-flex justify="space-between">
       <h2>图片管理</h2>
       <a-space>
         <a-button type="primary" href="/add_picture" target="_blank">+ 创建图片</a-button>

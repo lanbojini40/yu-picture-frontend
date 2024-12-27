@@ -1,4 +1,5 @@
 <template>
+  <div id="globalHeader">
   <a-row :wrap="false">
     <a-col flex="200px">
       <RouterLink to="/">
@@ -26,10 +27,17 @@
             </ASpace>
             <template #overlay>
               <a-menu>
+                <a-menu-item>
+                <router-link to="/my_space">
+                  <UserOutlined />
+                  我的空间
+                </router-link>
+              </a-menu-item>
                 <a-menu-item @click="doLogout">
                   <LogoutOutlined />
                   退出登录
                 </a-menu-item>
+
               </a-menu>
             </template>
           </a-dropdown>
@@ -40,10 +48,11 @@
       </div>
     </a-col>
   </a-row>
+  </div>
 </template>
 <script lang="ts" setup>
 import { computed, h, ref } from 'vue'
-import { HomeOutlined, LogoutOutlined } from '@ant-design/icons-vue'
+import { HomeOutlined, LogoutOutlined,UserOutlined } from '@ant-design/icons-vue'
 import { MenuProps, message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
@@ -72,13 +81,16 @@ const originItems = [
     label: '图片管理',
     title: '图片管理',
   },
-
   {
     key: '/add_picture',
     label: '创建图片',
     title: '创建图片',
   },
-
+  {
+    key: '/admin/spaceManage',
+    label: '空间管理',
+    title: '空间管理',
+  },
   {
     key: 'others',
     label: h('a', { href: 'https://www.codefather.cn', target: '_blank' }, '编程导航'),

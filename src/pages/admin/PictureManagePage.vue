@@ -153,8 +153,8 @@ const columns = [
     dataIndex: 'picInfo',
   },
   {
-    title: '用户 id',
-    dataIndex: 'userId',
+    title: '空间 id',
+    dataIndex: 'spaceId',
     width: 80,
   },
   {
@@ -203,6 +203,7 @@ const pagination = computed(() => {
 const fetchData = async () => {
   const res = await listPictureByPageUsingPost({
     ...searchParams,
+    nullSpaceId :true,
   })
   if (res.data.data) {
     dataList.value = res.data.data.records ?? []

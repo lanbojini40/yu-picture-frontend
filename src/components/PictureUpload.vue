@@ -6,6 +6,7 @@
       :custom-request="handleUpload"
       :before-upload="beforeUpload"
     >
+
       <img v-if="picture?.url" :src="picture?.url" alt="avatar" />
       <div v-else>
         <loading-outlined v-if="loading"></loading-outlined>
@@ -21,6 +22,7 @@ import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import type { UploadChangeParam, UploadProps } from 'ant-design-vue'
 import { uploadPictureUsingPost } from '@/api/pictureController.ts'
+import ImageCropper from '@/components/ImageCropper.vue'
 interface Props {
   picture?: API.PictureVO
   spaceId?: number

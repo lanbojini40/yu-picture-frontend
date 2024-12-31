@@ -17,6 +17,21 @@
         <UrlPictureUpload :picture="picture" :spaceId="spaceId":onSuccess="onSuccess" />
       </a-tab-pane>
     </a-tabs>
+<!-- 图片编辑区   -->
+    <div v-if="picture" class="edit-bar">
+      <a-space size="middle">
+        <a-button :icon="h(EditOutlined)" @click="doEditPicture">编辑图片</a-button>
+        <a-button type="primary" ghost :icon="h(FullscreenOutlined)" @click="doImagePainting">
+          AI 扩图
+        </a-button>
+      </a-space>
+      <ImageOutPainting
+        ref="imageOutPaintingRef"
+        :picture="picture"
+        :spaceId="spaceId"
+        :onSuccess="onImageOutPaintingSuccess"
+      />
+    </div>
 <!-- 图片信息表单   -->
     <a-form v-if="picture" layout="vertical" :model="pictureForm"@finish="handleSubmit">
     <a-form-item label="名称" name="name">
@@ -53,12 +68,13 @@
         <a-button type="primary" html-type="submit" style="width: 100%">创建</a-button>
       </a-form-item>
     </a-form>
+
   </div>
 </template>
 
 <script setup lang="ts">
 import PictureUpload from '@/components/PictureUpload.vue'
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, h, onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   editPictureUsingPost,
@@ -67,6 +83,9 @@ import {
 } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import UrlPictureUpload from '@/components/UrlPictureUpload.vue'
+import ImageCropper from '@/components/ImageCropper.vue'
+import { EditOutlined,FullscreenOutlined } from '@ant-design/icons-vue'
+import ImageOutPainting from '@/components/ImageOutPainting.vue'
 const picture = ref<API.PictureVO>()
 const pictureForm = reactive<API.PictureEditRequest>({})
 const uploadType = ref<'file' | 'url'>('file')
@@ -159,6 +178,34 @@ const getOldPicture = async () => {
     }
   }
 }
+// 图片编辑弹窗引用
+const imageCropperRef = ref()
+
+// 编辑图片
+const doEditPicture = () => {
+  if (imageCropperRef.value) {
+    imageCropperRef.value.openModal()
+  }
+}
+
+// 编辑成功事件
+const onCropSuccess = (newPicture: API.PictureVO) => {
+  picture.value = newPicture
+}
+// AI 扩图弹窗引用
+const imageOutPaintingRef = ref()
+
+// AI 扩图
+const doImagePainting = () => {
+  if (imageOutPaintingRef.value) {
+    imageOutPaintingRef.value.openModal()
+  }
+}
+
+// 编辑成功事件
+const onImageOutPaintingSuccess = (newPicture: API.PictureVO) => {
+  picture.value = newPicture
+}
 
 onMounted(() => {
   getOldPicture()
@@ -173,4 +220,9 @@ onMounted(() => {
   max-width: 720px;
   margin: 0 auto;
 }
+#addPicturePage .edit-bar {
+  text-align: center;
+  margin: 16px 0;
+}
+
 </style>
